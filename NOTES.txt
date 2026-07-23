@@ -1,5 +1,8 @@
 Issues with FadeLand that should be fixed
 - ctrl-click on a label does not take you to definition of the label. 
+    - seems like no go-to definition works between files
 - it would be nice to have a better back/forward hotkey for navigating code
 - type-aheads are not matching original casing of variables
 - `inc playerPos.x#, playerSpeed` did not work
+- sometimes the github puller gets behind, and wants to delete everything
+- floats with the # sigil don't highlight when you double click them. "var"#

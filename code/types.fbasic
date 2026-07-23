@@ -2,7 +2,8 @@ type fVec
   x#, y#
 endtype
 
-type torpedo
+type bomb
   pos as fVec
   vel as fVec
+  sId `sprite id
 endtype

@@ -1,0 +1,63 @@
+_setupBombs:
+
+  DIM bombs(10) as bomb
+  global bombCount = 1
+  global bombMass as float = 1
+  global bombSize = 20
+
+  bombs(0) = {
+    pos = {
+      x# = 100, y# = 100
+    },
+    vel = {
+      x# = 0, y# = 0
+    }
+    sId = reserve sprite id(bombs(0).sId)
+  }
+  sprite bombs(0).sId, bombs(0).pos.x#, bombs(0).pos.y#, 0
+  size sprite bombs(0).sId, bombSize, bombSize
+  color sprite bombs(0).sId, rgb(128, 0, 0)
+
+  bomb as bomb
+
+RETURN
+
+_loopBombs:
+  REMSTART
+    bombs follow simple projectile physics 
+  REMEND
+
+  for n = 0 to bombCount - 1
+    bomb = bombs(n)
+
+    ` accumulate various forces from acceleration
+    yForce# = 0
+    yForce# += GRAVITY
+
+    ` to calculate buoyancy, b = density * displacement * gravity
+    depth = max(0, (bomb.pos.y# + bombSize/2) - WATER_HEIGHT)
+    displacement = min(depth, bombSize) * bombSize
+
+    buoyancy = WATER_DENSITY * displacement * GRAVITY
+    yForce# -= buoyancy
+
+    ` add water drag
+    if (displacement > bombSize)
+      yForce# += bomb.vel.y# * -.8
+    endif
+
+    ` update bomb velocity
+    `  Force = mass * acceleration
+    `  therefor, acceleration = Force / mass
+    yAcc# = yForce# / bombMass
+    bomb.vel.y# += yAcc# * deltaTime
+
+    ` update bomb position
+    bomb.pos.x# += bomb.vel.x#
+    bomb.pos.y# += bomb.vel.y#
+
+    position sprite bomb.sId, bomb.pos.x#, bomb.pos.y#
+    bombs(n) = bomb
+  next
+
+RETURN

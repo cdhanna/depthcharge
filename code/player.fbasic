@@ -5,9 +5,9 @@ _setupPlayer:
   size sprite playerSprite, 50, 30
 
   ` setup player characteristics
-  global playerSpeed# = .8 `how fast does the boat accelerate?
-  global playerDrag# = .05 `velocity multiplyer; lower number means more drift.
-  global playerMaxSpeed = 5 `top absolute velocity
+  global playerSpeed# = 6 `how fast does the boat accelerate?
+  global playerDrag# = .03 `velocity multiplyer; lower number means more drift.
+  global playerMaxSpeed = 8 `top absolute velocity
   global playerPos as fVec = {
     x# = R_WIDTH/2, 
     y# = WATER_HEIGHT
@@ -26,10 +26,10 @@ _loopPlayer:
   REMEND
 
   if leftKey()
-    playerVel# -= playerSpeed#
+    playerVel# -= playerSpeed# * deltaTime
   endif
   if rightKey()
-    playerVel# += playerSpeed#
+    playerVel# += playerSpeed# * deltaTime
   endif
 
   playerPos.x# += playerVel#

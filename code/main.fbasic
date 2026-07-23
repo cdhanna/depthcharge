@@ -9,7 +9,7 @@ set render size R_WIDTH, R_HEIGHT
 
 
 set background color rgb(85, 85, 85)
-
+sync
 
 ` TODO: run various setup routines
 GOSUB _setupWorld
@@ -17,10 +17,18 @@ GOSUB _setupWorld
 ` TODO: render a main menu
 
 GOSUB _setupPlayer
+GOSUB _setupBombs
 
+time = timer()
 do
+  sync
+
+  oldTime = time
+  time = timer()
+  deltaTime = (time - oldTime) / 1000.0
 
   GOSUB _loopPlayer
+  GOSUB _loopBombs
 
-  sync
+
 loop

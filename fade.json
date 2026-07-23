@@ -9,6 +9,7 @@
     "code/main.fbasic",
     "code/types.fbasic",
     "code/world.fbasic",
-    "code/player.fbasic"
+    "code/player.fbasic",
+    "code/bombs.fbasic"
   ]
 }

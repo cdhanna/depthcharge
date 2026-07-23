@@ -6,6 +6,6 @@ _setupWorld:
   set sprite offset watersprite, 0, 0
   size sprite waterSprite, R_WIDTH, R_HEIGHT - WATER_HEIGHT
   color sprite waterSprite, rgb(0, 0, 128, 128)
-
+  order sprite waterSprite, ORDER_WATER
 
 return
