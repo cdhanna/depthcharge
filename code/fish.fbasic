@@ -1,0 +1,7 @@
+_setupFish:
+
+  reserve sprite id(fishSprite)
+  sprite fishSprite, R_WIDTH / 2, R_HEIGHT - 200, TEX_FISH
+  order sprite fishsprite, ORDER_WATER + 1
+
+RETURN

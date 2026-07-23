@@ -33,10 +33,15 @@ _launchBomb:
   next
   if n >= len(bombs) then RETURN `early exit, no bombs available
 
-  bombs(n).pos = playerPos
-  power = 300
-  bombs(n).vel.x# = power * cos(playerAimAngleRad#)
-  bombs(n).vel.y# = playerVel# + power * sin(playerAimAngleRad#)
+  ` TODO: we can calculate the cos/sin once and store it per frame.
+  bombs(n).pos = {
+    x# = playerPos.x# + indicatorDist * cos(playerAimAngleRad#),
+    y# = playerPos.y# + indicatorDist * sin(playerAimAngleRad#)
+  }
+
+  power# = 100 + 300 * playerPowerRatioModulated# * playerPowerRatioModulated#
+  bombs(n).vel.x# = power# * cos(playerAimAngleRad#)
+  bombs(n).vel.y# = playerVel# + power# * sin(playerAimAngleRad#)
   bombs(n).active = 1
   bombs(n).weight# = 500 + rnd(300)
 

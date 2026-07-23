@@ -5,3 +5,18 @@ global GRAVITY as float = 200
 global WATER_DENSITY as float = .2
 
 global deltaTime as float = 1
+
+
+global bombPowerRatio as float = .1
+global indicatorDist = 100
+
+
+` ASSETS
+reserve texture id(TEX_BOAT_HULL)
+texture TEX_BOAT_HULL, "assets/images/Sail_Boat_Hull"
+
+reserve texture id(TEX_BOAT_FLAG)
+texture TEX_BOAT_FLAG, "assets/images/Sail_Boat_Flag"
+
+reserve texture id(TEX_FISH)
+texture TEX_FISH, "assets/images/Fish1"

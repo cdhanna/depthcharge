@@ -1,21 +1,41 @@
 _setupPlayer:
 
+
+  playerTransform = reserve transform id(playerTransform)
+
+
   ` setup the boat sprite
   playerSprite = reserve sprite id(playerSprite)
-  sprite playerSprite, 0, 0, 0
-  size sprite playerSprite, 50, 30
+  sprite playerSprite, 0, 0, TEX_BOAT_HULL
+  set sprite offset playerSprite, .5, .75
+  size sprite playerSprite, 128, 128
   order sprite playerSprite, 1
+  attach sprite to transform playerSprite, playerTransform
+
+  ` setup boat sail
+  playerSailSprite = reserve sprite id(playerSailSprite)
+  sprite playerSailSprite, 0, 0, TEX_BOAT_FLAG
+  set sprite offset playerSailSprite, .5, .75
+  size sprite playerSailSprite, 128, 128
+  order sprite playerSailSprite, 1
+  attach sprite to transform playerSailSprite, playerTransform
 
   ` setup the aim indicator
   aimSprite = reserve sprite id(aimSprite)
   sprite aimsprite, 0, 0, 0
-  size sprite aimsprite, 40, 4
-  set sprite offset aimsprite, -.5, .5
+  size sprite aimsprite, 80, 4
+  set sprite offset aimsprite, 0, .5
   color sprite aimsprite, rgb(128, 128, 128)
   aimTween = reserve tween id(aimTween)
   create basic tween aimTween, 0, 0, 0, 0
   GOSUB _resetAimTween
 
+  ` setup the power indicator
+  powerSprite = reserve sprite id(powerSprite)
+  sprite powerSprite, 0, 0, 0
+  size sprite powerSprite, 30, 12
+  set sprite offset powerSprite, 0, .5
+  color sprite powerSprite, rgb(255, 0, 0)
 
   ` setup player characteristics
   global playerSpeed# = 6 `how fast does the boat accelerate?
@@ -27,8 +47,11 @@ _setupPlayer:
   }
   global playerVel# = 0
   global playerAimAngleRad# = -1.57
-  global playerAimDurationMs = 3000
-
+  global playerAimDurationMs = 5000
+  global playerPowerRatio# = 0
+  global playerPowerRatioModulated#
+  global playerPowerMaxTimeMs = 2000
+  global playerPowerStartTime = 0
 
   ` setup player start positions
   gosub _positionplayer
@@ -45,9 +68,11 @@ _loopPlayer:
 
   if leftKey()
     playerVel# -= playerSpeed# * deltaTime
+    set sprite flip playerSailSprite, 1, 0
   endif
   if rightKey()
     playerVel# += playerSpeed# * deltaTime
+    set sprite flip playerSailSprite, 0, 0
   endif
 
   playerPos.x# += playerVel#
@@ -60,20 +85,47 @@ _loopPlayer:
   endif
 
   
+  ` handle power charge up
   if new spaceKey()
     ` launch the bomb!
-    GOSUB _launchbomb
+    ` GOSUB _launchbomb
+    playerPowerStartTime = time
+    playerPowerRatio# = 0
+    playerPowerRatioModulated# = 0
+  endif
+
+  if playerPowerStartTime > 0
+    if spaceKey()
+      ` building up
+        heldDurationMs = time - playerPowerStartTime
+        playerPowerRatio# = min(1, (heldDurationMs + 0.0) / playerPowerMaxTimeMs)
+        playerPowerRatioModulated# = modulatePower(playerPowerRatio#)
+
+      else
+      ` release the bomb!
+      bombPowerRatio = playerPowerRatio#
+      GOSUB _launchBomb
+      playerPowerStartTime = 0
+      playerPowerRatio# = 0
+      playerPowerRatioModulated# = 0
+    endif
   endif
 
   GOSUB _positionPlayer
 RETURN
 
 _positionPlayer:
-  position sprite playerSprite, playerPos.x#, playerPos.y#
-  position sprite aimsprite, playerPos.x#, playerPos.y#
+  ` position sprite playerSprite, playerPos.x#, playerPos.y#
+  position sprite aimsprite, playerPos.x# + indicatorDist * cos(playerAimAngleRad#) playerPos.y# + indicatorDist * sin(playerAimAngleRad#)
+  position sprite powerSprite, playerPos.x# + indicatorDist * cos(playerAimAngleRad#), playerPos.y# + indicatorDist * sin(playerAimAngleRad#)
 
+
+  set transform position playerTransform, playerPos.x#, playerPos.y#
+
+  size sprite powerSprite, playerPowerRatioModulated# * 80, 12
   GOSUB _resetaimtween
   rotate sprite aimsprite, playerAimAngleRad#
+  rotate sprite powerSprite, playerAimAngleRad#
 RETURN
 
 _resetAimTween:
@@ -83,3 +135,9 @@ _resetAimTween:
     set tween type aimTween, 1
   endif
 RETURN
+
+function modulatePower(power#)
+  ` (1 - .05^x) * 1.05
+  f# = .05
+  fPower# = pow(0.05, power#)
+endfunction (1 - fPower#) * 1 + f#

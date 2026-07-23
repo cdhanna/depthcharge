@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "assetName": "assets/images/Sail_Boat_Flag",
+      "sourcePath": "assets/images/Sail_Boat_Flag.png",
+      "sourceHash": "b401d19d51e16e095251f45935cadd9595ac2379a14d6024b92c9d120ff6cd02",
+      "format": "auto",
+      "encoderVersion": 33,
+      "width": 128,
+      "height": 128,
+      "blobPath": ".fade-cache/blobs/b401d19d51e16e095251f45935cadd9595ac2379a14d6024b92c9d120ff6cd02.auto.v33.xnb",
+      "compiledAt": "2026-07-23T18:27:46.787Z"
+    },
+    {
+      "assetName": "assets/images/Sail_Boat_Hull",
+      "sourcePath": "assets/images/Sail_Boat_Hull.png",
+      "sourceHash": "6b90f04aa347fea1e8466074272c0801b4d3c646b5370c14d1e20024b70da307",
+      "format": "auto",
+      "encoderVersion": 33,
+      "width": 128,
+      "height": 128,
+      "blobPath": ".fade-cache/blobs/6b90f04aa347fea1e8466074272c0801b4d3c646b5370c14d1e20024b70da307.auto.v33.xnb",
+      "compiledAt": "2026-07-23T18:27:46.840Z"
+    },
+    {
+      "assetName": "assets/images/Fish1",
+      "sourcePath": "assets/images/Fish1.png",
+      "sourceHash": "b097e473d47f4b6c72364ddaeb60c76c7869e9e692d1080ac5523c688fcfc710",
+      "format": "auto",
+      "encoderVersion": 33,
+      "width": 128,
+      "height": 128,
+      "blobPath": ".fade-cache/blobs/b097e473d47f4b6c72364ddaeb60c76c7869e9e692d1080ac5523c688fcfc710.auto.v33.xnb",
+      "compiledAt": "2026-07-23T18:53:06.045Z"
+    }
+  ]
+}

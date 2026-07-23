@@ -18,6 +18,7 @@ GOSUB _setupWorld
 
 GOSUB _setupPlayer
 GOSUB _setupBombs
+GOSUB _setupFish
 
 time = timer()
 do
