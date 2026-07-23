@@ -1,0 +1,16 @@
+
+
+`TODO: setup basic game structures
+
+` render width and height
+global R_WIDTH = 800
+global R_HEIGHT = 800
+set render size R_WIDTH, R_HEIGHT
+
+
+set background color rgb(56, 71, 107)
+
+
+do
+  sync
+loop

@@ -1,0 +1,11 @@
+{
+  "$schema": "/fade.schema.json",
+  "name": "depthcharge",
+  "description": "gmtk26",
+  "type": "monogame",
+  "commandDlls": [],
+  "sources": [
+    "code/main.fbasic",
+    "code/types.fbasic"
+  ]
+}
