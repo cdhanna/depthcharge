@@ -2,23 +2,43 @@ _setupBombs:
 
   DIM bombs(10) as bomb
   global bombCount = 1
-  global bombMass as float = 1
   global bombSize = 20
 
-  bombs(0) = {
-    pos = {
-      x# = 100, y# = 100
-    },
-    vel = {
-      x# = 0, y# = 0
+  for n = 0 to len(bombs) - 1
+    bombs(n) = {
+      pos = {
+        x# = 100, y# = 100
+      },
+      vel = {
+        x# = 50, y# = -100
+      }
+      weight# = 800
+      sId = reserve sprite id(bombs(n).sId)
+      active = 0
     }
-    sId = reserve sprite id(bombs(0).sId)
-  }
-  sprite bombs(0).sId, bombs(0).pos.x#, bombs(0).pos.y#, 0
-  size sprite bombs(0).sId, bombSize, bombSize
-  color sprite bombs(0).sId, rgb(128, 0, 0)
+    sprite bombs(n).sId, bombs(n).pos.x#, bombs(n).pos.y#, 0
+    size sprite bombs(n).sId, bombSize, bombSize
+    color sprite bombs(n).sId, rgb(128, 0, 0)
+  next
 
   bomb as bomb
+
+RETURN
+
+_launchBomb:
+
+  n = 0
+  for n = 0 to len(bombs) - 1
+    if not bombs(n).active then exit
+  next
+  if n >= len(bombs) then RETURN `early exit, no bombs available
+
+  bombs(n).pos = playerPos
+  power = 300
+  bombs(n).vel.x# = power * cos(playerAimAngleRad#)
+  bombs(n).vel.y# = playerVel# + power * sin(playerAimAngleRad#)
+  bombs(n).active = 1
+  bombs(n).weight# = 500 + rnd(300)
 
 RETURN
 
@@ -27,12 +47,16 @@ _loopBombs:
     bombs follow simple projectile physics 
   REMEND
 
-  for n = 0 to bombCount - 1
+  for n = 0 to len(bombs) - 1
     bomb = bombs(n)
+    if not bomb.active
+      skip
+    endif
 
     ` accumulate various forces from acceleration
     yForce# = 0
-    yForce# += GRAVITY
+    xForce# = 0
+    yForce# += GRAVITY * bomb.weight#
 
     ` to calculate buoyancy, b = density * displacement * gravity
     depth = max(0, (bomb.pos.y# + bombSize/2) - WATER_HEIGHT)
@@ -42,21 +66,32 @@ _loopBombs:
     yForce# -= buoyancy
 
     ` add water drag
-    if (displacement > bombSize)
-      yForce# += bomb.vel.y# * -.8
+    if (depth > 0)
+      dragCoef#= .1
+      submergedFraction# = (displacement+0.0) / (bombSize * bombSize)
+      dragArea# = bombSize * submergedFraction#
+      yForce# -= dragCoef# * .5 * WATER_DENSITY * bomb.vel.y# * abs(bomb.vel.y#) * bombSize * dragArea#
+      xForce# -= dragCoef# * .5 * WATER_DENSITY * bomb.vel.x# * abs(bomb.vel.x#) * bombSize * dragArea#
     endif
 
     ` update bomb velocity
     `  Force = mass * acceleration
     `  therefor, acceleration = Force / mass
-    yAcc# = yForce# / bombMass
+    yAcc# = yForce# / bomb.weight#
+    xAcc# = xForce# / bomb.weight#
     bomb.vel.y# += yAcc# * deltaTime
-
+    bomb.vel.x# += xAcc# * deltaTime
     ` update bomb position
-    bomb.pos.x# += bomb.vel.x#
-    bomb.pos.y# += bomb.vel.y#
+    bomb.pos.x# += bomb.vel.x# * deltaTime
+    bomb.pos.y# += bomb.vel.y# * deltaTime
 
     position sprite bomb.sId, bomb.pos.x#, bomb.pos.y#
+
+    ` if the bomb is off the screen, we can mark it as inactive.
+    if bomb.pos.y# > R_HEIGHT + bombSize
+      bomb.active = 0
+    endif
+
     bombs(n) = bomb
   next
 

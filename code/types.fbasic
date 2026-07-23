@@ -6,4 +6,6 @@ type bomb
   pos as fVec
   vel as fVec
   sId `sprite id
+  weight#
+  active as byte
 endtype

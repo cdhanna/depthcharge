@@ -1,7 +1,7 @@
 global WATER_HEIGHT = 200
 global ORDER_WATER = 10
 
-global GRAVITY as float = 2
-global WATER_DENSITY as float = .005
+global GRAVITY as float = 200
+global WATER_DENSITY as float = .2
 
 global deltaTime as float = 1

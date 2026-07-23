@@ -1,8 +1,21 @@
 _setupPlayer:
 
+  ` setup the boat sprite
   playerSprite = reserve sprite id(playerSprite)
   sprite playerSprite, 0, 0, 0
   size sprite playerSprite, 50, 30
+  order sprite playerSprite, 1
+
+  ` setup the aim indicator
+  aimSprite = reserve sprite id(aimSprite)
+  sprite aimsprite, 0, 0, 0
+  size sprite aimsprite, 40, 4
+  set sprite offset aimsprite, -.5, .5
+  color sprite aimsprite, rgb(128, 128, 128)
+  aimTween = reserve tween id(aimTween)
+  create basic tween aimTween, 0, 0, 0, 0
+  GOSUB _resetAimTween
+
 
   ` setup player characteristics
   global playerSpeed# = 6 `how fast does the boat accelerate?
@@ -13,6 +26,11 @@ _setupPlayer:
     y# = WATER_HEIGHT
   }
   global playerVel# = 0
+  global playerAimAngleRad# = -1.57
+  global playerAimDurationMs = 3000
+
+
+  ` setup player start positions
   gosub _positionplayer
 
 RETURN
@@ -41,10 +59,27 @@ _loopPlayer:
     playerVel# = -playerMaxSpeed
   endif
 
+  
+  if new spaceKey()
+    ` launch the bomb!
+    GOSUB _launchbomb
+  endif
+
   GOSUB _positionPlayer
 RETURN
 
 _positionPlayer:
   position sprite playerSprite, playerPos.x#, playerPos.y#
+  position sprite aimsprite, playerPos.x#, playerPos.y#
 
+  GOSUB _resetaimtween
+  rotate sprite aimsprite, playerAimAngleRad#
+RETURN
+
+_resetAimTween:
+  playerAimAngleRad# = (.1 + tweenVal(aimTween)*.8) * -3.14
+  if is tween done(aimTween) 
+    create basic tween aimTween, 0, 1, playerAimDurationMs, 0
+    set tween type aimTween, 1
+  endif
 RETURN
