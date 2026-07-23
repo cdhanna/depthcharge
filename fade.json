@@ -8,6 +8,7 @@
     "code/headers.fbasic",
     "code/main.fbasic",
     "code/types.fbasic",
-    "code/world.fbasic"
+    "code/world.fbasic",
+    "code/player.fbasic"
   ]
 }

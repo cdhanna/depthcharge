@@ -1,0 +1,8 @@
+type fVec
+  x#, y#
+endtype
+
+type torpedo
+  pos as fVec
+  vel as fVec
+endtype

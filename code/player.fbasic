@@ -1,0 +1,50 @@
+_setupPlayer:
+
+  playerSprite = reserve sprite id(playerSprite)
+  sprite playerSprite, 0, 0, 0
+  size sprite playerSprite, 50, 30
+
+  ` setup player characteristics
+  global playerSpeed# = .8 `how fast does the boat accelerate?
+  global playerDrag# = .05 `velocity multiplyer; lower number means more drift.
+  global playerMaxSpeed = 5 `top absolute velocity
+  global playerPos as fVec = {
+    x# = R_WIDTH/2, 
+    y# = WATER_HEIGHT
+  }
+  global playerVel# = 0
+  gosub _positionplayer
+
+RETURN
+
+_loopPlayer:
+  REMSTART
+    controls:
+    - left/right arrow keys move the player left and right on the screen. 
+    - TODO: there is a constant moving sweep angle
+    - TODO: hold space to charge up a shot
+  REMEND
+
+  if leftKey()
+    playerVel# -= playerSpeed#
+  endif
+  if rightKey()
+    playerVel# += playerSpeed#
+  endif
+
+  playerPos.x# += playerVel#
+  playerVel# *= (1 - playerDrag#)
+  if playerVel# > playerMaxSpeed
+    playerVel# = playerMaxSpeed
+  endif
+  if playerVel# < -playerMaxSpeed
+    playerVel# = -playerMaxSpeed
+  endif
+
+  GOSUB _positionPlayer
+RETURN
+
+_positionPlayer:
+  position sprite playerSprite, playerPos.x#, playerPos.y#
+
+RETURN

@@ -14,7 +14,13 @@ set background color rgb(85, 85, 85)
 ` TODO: run various setup routines
 GOSUB _setupWorld
 
+` TODO: render a main menu
+
+GOSUB _setupPlayer
 
 do
+
+  GOSUB _loopPlayer
+
   sync
 loop
