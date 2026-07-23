@@ -1,0 +1,11 @@
+_setupWorld:
+
+  ` create the main water sprite
+  waterSprite = reserve sprite id(waterSprite)
+  sprite waterSprite, 0, WATER_HEIGHT, 0
+  set sprite offset watersprite, 0, 0
+  size sprite waterSprite, R_WIDTH, R_HEIGHT - WATER_HEIGHT
+  color sprite waterSprite, rgb(0, 0, 128, 128)
+
+
+return

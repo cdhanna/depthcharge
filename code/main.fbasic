@@ -8,7 +8,11 @@ global R_HEIGHT = 800
 set render size R_WIDTH, R_HEIGHT
 
 
-set background color rgb(56, 71, 107)
+set background color rgb(85, 85, 85)
+
+
+` TODO: run various setup routines
+GOSUB _setupWorld
 
 
 do

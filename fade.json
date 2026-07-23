@@ -5,7 +5,9 @@
   "type": "monogame",
   "commandDlls": [],
   "sources": [
+    "code/headers.fbasic",
     "code/main.fbasic",
-    "code/types.fbasic"
+    "code/types.fbasic",
+    "code/world.fbasic"
   ]
 }

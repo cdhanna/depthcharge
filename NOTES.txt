@@ -1,0 +1,4 @@
+Issues with FadeLand that should be fixed
+- ctrl-click on a label does not take you to definition of the label. 
+- it would be nice to have a better back/forward hotkey for navigating code
+- type-aheads are not matching original casing of variables
